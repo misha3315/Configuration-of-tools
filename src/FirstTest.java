@@ -1,7 +1,6 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -9,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import sun.plugin.dom.core.Element;
 
 import java.net.URL;
 
@@ -41,27 +39,70 @@ public class FirstTest {
     }
 
     @Test
-
     public void assertElementHasTextTest() {
 
-
-        WebElement element = driver.findElementByXPath("//*[contains(@text,'Search Wikipedia')]");
-        element.click();
-
-        WebElement waitForElementByXpath = assertElementHasText(
-                "//*[contains(@text,'Search…')]",
+        waitForElementByXpathAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "The element did not open!",
+                5);
+        waitForElementByXpathAndSandKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Java",
                 "The element for this locator does not contain text!",
                 5);
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "The element did not clear the field!",
+                5);
+        waitForElementByIdAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "The element was not closed!",
+                5);
 
-        Assert.assertEquals("The element does not match the expected value!", "Search…", waitForElementByXpath.getText());
+
     }
 
 
-    private WebElement assertElementHasText(String xpath, String errorMessage, long timeoutInSeconds) {
+    private WebElement assertElementHasText(By by, String errorMessage, long timeoutInSeconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
-        By by = By.xpath(xpath);
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
+
+    }
+
+    private WebElement assertElementHasText(By by, String errorMessage) {
+        return assertElementHasText(by, errorMessage, 5);
+
+    }
+
+    private WebElement waitForElementByXpathAndClick(By by, String errorMessage, long timeoutInSeconds) {
+        WebElement element = assertElementHasText(by, errorMessage, 5);
+        element.click();
+        return element;
+    }
+
+    private WebElement waitForElementByXpathAndSandKeys(By by, String value, String errorMessage, long timeoutInSeconds) {
+        WebElement element = assertElementHasText(by, errorMessage, 5);
+        element.sendKeys(value);
+        return element;
+    }
+    private WebElement waitForElementByIdAndClick(By by, String errorMessage, long timeoutInSeconds) {
+        WebElement element = assertElementHasText(by, errorMessage, 5);
+        element.click();
+        return element;
+    }
+
+    private WebElement waitForElementByIdAndSandKeys(By by, String value, String errorMessage, long timeoutInSeconds) {
+        WebElement element = assertElementHasText(by, errorMessage, 5);
+        element.sendKeys(value);
+        return element;
+    }
+    private WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds){
+        WebElement element = assertElementHasText(by, errorMessage, timeoutInSeconds);
+        element.clear();
+        return element;
     }
 }
+
+
