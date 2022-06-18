@@ -87,6 +87,7 @@ public class FirstTest {
         element.sendKeys(value);
         return element;
     }
+
     private WebElement waitForElementByIdAndClick(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = assertElementHasText(by, errorMessage, 5);
         element.click();
@@ -98,11 +99,10 @@ public class FirstTest {
         element.sendKeys(value);
         return element;
     }
-    private WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds){
+
+    private WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = assertElementHasText(by, errorMessage, timeoutInSeconds);
         element.clear();
         return element;
     }
 }
-
-
