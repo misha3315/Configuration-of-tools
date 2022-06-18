@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -41,6 +43,8 @@ public class FirstTest {
     @Test
     public void assertElementHasTextTest() {
 
+
+
         waitForElementByXpathAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "The element did not open!",
@@ -50,16 +54,23 @@ public class FirstTest {
                 "Java",
                 "The element for this locator does not contain text!",
                 5);
+
+        List<WebElement> listOfElements = driver.findElements(By.id("org.wikipedia:id/page_list_item_description"));
+        int listSize = listOfElements.size();
+
+
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
-                "The element did not clear the field!",
+                "The item was not deleted",
                 5);
         waitForElementByIdAndClick(
                 By.id("org.wikipedia:id/search_close_btn"),
-                "The element was not closed!",
+                "The element did not close",
                 5);
-
-
+        Assert.assertEquals(
+                "Incorrect number of articles!",
+                3,
+                listSize);
     }
 
 
@@ -105,4 +116,5 @@ public class FirstTest {
         element.clear();
         return element;
     }
+
 }
