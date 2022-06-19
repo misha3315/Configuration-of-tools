@@ -45,40 +45,24 @@ public class FirstTest {
 
 
         waitForElementByXpathAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                By.xpath("//*[@text='Search Wikipedia']"),
                 "The element did not open!",
                 5);
 
-        waitForElementByXpathAndSandKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
+        waitForElementByIdAndSandKeys(
+                By.xpath("//*[@text='Search…']"),
                 "Java",
                 "The element for this locator does not contain text!",
                 5);
 
-        List<WebElement> ListOfArticlesUpTo = driver.findElements(By.id("org.wikipedia:id/page_list_item_description"));
-        int listSizeBefore = ListOfArticlesUpTo.size();
+        WebElement elementJava = assertElementHasText(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Java element not found!",
+                15);
 
-        Assert.assertEquals(
-                "Incorrect number of articles, up to!",
-                3,
-                listSizeBefore);
 
-        waitForElementAndClear(
-                By.id("org.wikipedia:id/search_src_text"),
-                "The item was not deleted",
-                5);
+        Assert.assertEquals("Element named Java not found!", "Java", elementJava.getText());
 
-        List<WebElement> listOfElements1 = driver.findElements(By.id("org.wikipedia:id/page_list_item_description"));
-        int listSizeAfter = listOfElements1.size();
-
-        waitForElementByIdAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "The element did not close",
-                5);
-        Assert.assertEquals(
-                "Incorrect number of articles, after!",
-                0,
-                listSizeAfter);
 
     }
 
